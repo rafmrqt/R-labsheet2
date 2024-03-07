@@ -1,97 +1,99 @@
 #Lab sheet 2
-#Assessment
-#Ex1 (a)
-#vector x
+
+#Problem 1 
+# a)
+# X
 set.seed(123)
 X <- rnorm(400, mean = 10, sd = 5)
 
-#histogram
+#Histogram
 hist(X, breaks = 15, prob = TRUE, main = "X PMF", xlab = "X values")
 
-#actual normal curve for comparision
+# Comparison with normal curve
 curve(dnorm(x, mean = 10, sd = 5), add = TRUE, lwd = 2)
 
 
-#Ex1 (b)
-#vector y
+# b)
+# Y
 Y <- rnorm(400, mean = 24, sd = 12)
 
-#calculating S
+#Computing S
 S <- Y - X
 
-#hist of S
+#Histogram of S
 hist(S, breaks = 15, prob = TRUE, main = "Histogram of S", xlab = "S values")
 
 
-#Ex1 (c)
-#mean and std dev
-S_mean <- 24 - 10
-S_stddev <- sqrt(12^2 + 5^2)
+# c)
+#Mean and std dev of S
+Mean.of.S <- 24 - 10
+Stddev.of.S <- sqrt(12^2 + 5^2)
 
-#updated histogram of S with curve of pmf for comparision 
-hist(S, breaks = 15, prob = TRUE, main = "Histogram of S", xlab = "S values")
+#Comparison with updated histogram of S with curve of PMF
+hist(S, breaks = 15, prob = TRUE, main = "Updated histogram of S", xlab = "Values of S")
 curve(dnorm(x, mean = mu_S, sd = sigma_S), add = TRUE, lwd = 2)
 
-#Ex1 (d)
+# d)
 #chi squared test? Maybw use GBT for this one?
 
-#Ex2 (a)
-#setup like as stated in problem
+#Problem 2 
+# a)
+#Setup of the expirement, as explained in the Problem
 n <- 5
 P <- runif(1, 0, 1)
 B <- rbinom(1, size = n, prob = P)
 
-#declaring X
+#Outcome of the expirement X
 X <- B + 1
 
-#P & X sample vectors
-Psample <- numeric(1000)
-Xsample <- numeric(1000)
+#P and X sample vectors
+Sample.of.P <- numeric(1000)
+Sample.of.X <- numeric(1000)
 
-#running the experiment 1000 times
+#Completing the experiment 1000 times
 for(i in 1:1000) {
-  Psample[i] <- runif(1, 0, 1) # Generate P
-  Xsample[i] <- rbinom(1, size = n, prob = Psample[i]) + 1 # Generate X
+  Sample.of.P[i] <- runif(1, 0, 1) # Generate P
+  Sample.of.X[i] <- rbinom(1, size = n, prob = Sample.of.P[i]) + 1 # Generate X
 }
 
-#Histogram for psample
-hist(Psample, main="Histogram of Psample", xlab="Values of P")
+#Histogram for Sample.of.P
+hist(Sample.of.P, main="Histogram of sample of P", xlab="P values")
 
-#histogram for xsample with breaks
-hist(Xsample, breaks=c(0.5:6.5), main="Histogram of Xsample", xlab="Values of X")
+#histogram for sample of x with breaks
+hist(Sample.of.X, breaks=c(0.5:6.5), main="Histogram of sample of X", xlab="X values")
 
 
 
-#Ex2 (b)
-# Calculate the proportions of each outcome in Xsample
-opbservedfreq <- table(Xsample) 
-proportions <- opbservedfreq / length(Xsample)
+# b)
+# Computing the frequences of each outcome in sample of X
+frequences.observed <- table(Xsample) 
+proportions <- frequences.observed / length(Xsample)
 proportions
 
 
 
-#Ex2 (c)
-# Assuming we already have the proportions from part (b)
-# Check if all proportions are approximately equal to 1/6
-is_uniform <- all(abs(proportions - 1/6) < 0.05) #Allow some tolerance
-is_uniform
-#returns true so yeah it is a uniform 
+# c)
+#Assuming we already have the proportions
+#Check if all proportions are approximately equal to 1/6
+uniform <- all(abs(proportions - 1/6) < 0.05) #Allow some tolerance
+uniform
+#true so yeah it is a uniform 
 
-#Ex2 (d)
+# d)
 #what about different values of n
 claimtest <- function(n, num_trials = 1000) {
-  Psample <- runif(num_trials, 0, 1)
-  Xsample <- rbinom(num_trials, size = n, prob = Psample) + 1
-  proportions <- table(Xsample) / length(Xsample)
-  hist(Xsample, breaks = seq(0.5, max(Xsample)+0.5, by = 1), main = paste("n =", n))
+  Sample.of.P <- runif(num_trials, 0, 1)
+  Sample.of.X <- rbinom(num_trials, size = n, prob = Sample.of.P) + 1
+  proportions <- table(Sample.of.X) / length(Sample.of.X)
+  hist(Sample.of.X, breaks = seq(0.5, max(Sample.of.X)+0.5, by = 1), main = paste("n =", n))
   return(all(abs(proportions - 1/(n+1)) < 0.05))
 }
 
 
-#n < 5
+#n smaller than 5
 claimtest(n = 3)
 #Again is uniform 
 
-#n > 5
+#n greater than 5
 claimtest(n = 20)
 #now for n > 5 is uniform 
